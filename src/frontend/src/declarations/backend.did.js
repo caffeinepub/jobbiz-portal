@@ -8,10 +8,175 @@
 
 import { IDL } from '@icp-sdk/core/candid';
 
-export const idlService = IDL.Service({});
+export const UserRole = IDL.Variant({
+  'admin' : IDL.Null,
+  'user' : IDL.Null,
+  'guest' : IDL.Null,
+});
+export const Time = IDL.Int;
+export const ApprovalStatus = IDL.Variant({
+  'pending' : IDL.Null,
+  'approved' : Time,
+  'rejected' : IDL.Record({ 'timestamp' : Time, 'reason' : IDL.Text }),
+});
+export const Business = IDL.Record({
+  'id' : IDL.Text,
+  'contact' : IDL.Text,
+  'name' : IDL.Text,
+  'description' : IDL.Text,
+  'approvalStatus' : ApprovalStatus,
+  'category' : IDL.Text,
+  'location' : IDL.Text,
+});
+export const Employee = IDL.Record({
+  'id' : IDL.Text,
+  'contact' : IDL.Text,
+  'name' : IDL.Text,
+  'education' : IDL.Text,
+  'experience' : IDL.Text,
+  'approvalStatus' : ApprovalStatus,
+  'skills' : IDL.Text,
+});
+export const Employer = IDL.Record({
+  'id' : IDL.Text,
+  'contact' : IDL.Text,
+  'size' : IDL.Text,
+  'description' : IDL.Text,
+  'website' : IDL.Text,
+  'approvalStatus' : ApprovalStatus,
+  'companyName' : IDL.Text,
+  'industry' : IDL.Text,
+});
+export const UserProfile = IDL.Record({
+  'name' : IDL.Text,
+  'email' : IDL.Text,
+});
+
+export const idlService = IDL.Service({
+  '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+  'approveBusiness' : IDL.Func([IDL.Text], [], []),
+  'approveEmployee' : IDL.Func([IDL.Text], [], []),
+  'approveEmployer' : IDL.Func([IDL.Text], [], []),
+  'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+  'getAllBusinesses' : IDL.Func([], [IDL.Vec(Business)], ['query']),
+  'getAllEmployees' : IDL.Func([], [IDL.Vec(Employee)], ['query']),
+  'getAllEmployers' : IDL.Func([], [IDL.Vec(Employer)], ['query']),
+  'getBusiness' : IDL.Func([IDL.Text], [IDL.Opt(Business)], ['query']),
+  'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+  'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+  'getEmployee' : IDL.Func([IDL.Text], [IDL.Opt(Employee)], ['query']),
+  'getEmployer' : IDL.Func([IDL.Text], [IDL.Opt(Employer)], ['query']),
+  'getUserProfile' : IDL.Func(
+      [IDL.Principal],
+      [IDL.Opt(UserProfile)],
+      ['query'],
+    ),
+  'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+  'listBusiness' : IDL.Func(
+      [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+      [],
+      [],
+    ),
+  'registerEmployee' : IDL.Func(
+      [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+      [],
+      [],
+    ),
+  'registerEmployer' : IDL.Func(
+      [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+      [],
+      [],
+    ),
+  'rejectBusiness' : IDL.Func([IDL.Text, IDL.Text], [], []),
+  'rejectEmployee' : IDL.Func([IDL.Text, IDL.Text], [], []),
+  'rejectEmployer' : IDL.Func([IDL.Text, IDL.Text], [], []),
+  'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+});
 
 export const idlInitArgs = [];
 
-export const idlFactory = ({ IDL }) => { return IDL.Service({}); };
+export const idlFactory = ({ IDL }) => {
+  const UserRole = IDL.Variant({
+    'admin' : IDL.Null,
+    'user' : IDL.Null,
+    'guest' : IDL.Null,
+  });
+  const Time = IDL.Int;
+  const ApprovalStatus = IDL.Variant({
+    'pending' : IDL.Null,
+    'approved' : Time,
+    'rejected' : IDL.Record({ 'timestamp' : Time, 'reason' : IDL.Text }),
+  });
+  const Business = IDL.Record({
+    'id' : IDL.Text,
+    'contact' : IDL.Text,
+    'name' : IDL.Text,
+    'description' : IDL.Text,
+    'approvalStatus' : ApprovalStatus,
+    'category' : IDL.Text,
+    'location' : IDL.Text,
+  });
+  const Employee = IDL.Record({
+    'id' : IDL.Text,
+    'contact' : IDL.Text,
+    'name' : IDL.Text,
+    'education' : IDL.Text,
+    'experience' : IDL.Text,
+    'approvalStatus' : ApprovalStatus,
+    'skills' : IDL.Text,
+  });
+  const Employer = IDL.Record({
+    'id' : IDL.Text,
+    'contact' : IDL.Text,
+    'size' : IDL.Text,
+    'description' : IDL.Text,
+    'website' : IDL.Text,
+    'approvalStatus' : ApprovalStatus,
+    'companyName' : IDL.Text,
+    'industry' : IDL.Text,
+  });
+  const UserProfile = IDL.Record({ 'name' : IDL.Text, 'email' : IDL.Text });
+  
+  return IDL.Service({
+    '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+    'approveBusiness' : IDL.Func([IDL.Text], [], []),
+    'approveEmployee' : IDL.Func([IDL.Text], [], []),
+    'approveEmployer' : IDL.Func([IDL.Text], [], []),
+    'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+    'getAllBusinesses' : IDL.Func([], [IDL.Vec(Business)], ['query']),
+    'getAllEmployees' : IDL.Func([], [IDL.Vec(Employee)], ['query']),
+    'getAllEmployers' : IDL.Func([], [IDL.Vec(Employer)], ['query']),
+    'getBusiness' : IDL.Func([IDL.Text], [IDL.Opt(Business)], ['query']),
+    'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+    'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+    'getEmployee' : IDL.Func([IDL.Text], [IDL.Opt(Employee)], ['query']),
+    'getEmployer' : IDL.Func([IDL.Text], [IDL.Opt(Employer)], ['query']),
+    'getUserProfile' : IDL.Func(
+        [IDL.Principal],
+        [IDL.Opt(UserProfile)],
+        ['query'],
+      ),
+    'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+    'listBusiness' : IDL.Func(
+        [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+        [],
+        [],
+      ),
+    'registerEmployee' : IDL.Func(
+        [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+        [],
+        [],
+      ),
+    'registerEmployer' : IDL.Func(
+        [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+        [],
+        [],
+      ),
+    'rejectBusiness' : IDL.Func([IDL.Text, IDL.Text], [], []),
+    'rejectEmployee' : IDL.Func([IDL.Text, IDL.Text], [], []),
+    'rejectEmployer' : IDL.Func([IDL.Text, IDL.Text], [], []),
+    'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+  });
+};
 
 export const init = ({ IDL }) => { return []; };

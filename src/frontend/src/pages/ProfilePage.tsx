@@ -1,14 +1,19 @@
 import { useNavigate } from '@tanstack/react-router';
 import { useInternetIdentity } from '../hooks/useInternetIdentity';
+import { useGetAllEmployees, useGetAllEmployers, useGetAllBusinesses } from '../hooks/useQueries';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { User, Mail, Phone, MapPin, Briefcase, Building2, LogOut } from 'lucide-react';
+import { User, Briefcase, Building2, LogOut, Loader2 } from 'lucide-react';
+import ApprovalStatusBadge from '../components/ApprovalStatusBadge';
 
 export default function ProfilePage() {
   const { identity, clear } = useInternetIdentity();
   const navigate = useNavigate();
+  const { data: employees = [], isLoading: employeesLoading } = useGetAllEmployees();
+  const { data: employers = [], isLoading: employersLoading } = useGetAllEmployers();
+  const { data: businesses = [], isLoading: businessesLoading } = useGetAllBusinesses();
 
   const isAuthenticated = !!identity && !identity.getPrincipal().isAnonymous();
 
@@ -19,10 +24,17 @@ export default function ProfilePage() {
 
   const principal = identity.getPrincipal().toString();
 
+  // Find user's registrations by matching principal in ID
+  const userEmployee = employees.find((e) => e.id.includes(principal));
+  const userEmployer = employers.find((e) => e.id.includes(principal));
+  const userBusiness = businesses.find((b) => b.id.includes(principal));
+
   const handleLogout = () => {
     clear();
     navigate({ to: '/' });
   };
+
+  const isLoading = employeesLoading || employersLoading || businessesLoading;
 
   return (
     <div className="container py-16">
@@ -67,36 +79,88 @@ export default function ProfilePage() {
           <Card>
             <CardHeader>
               <CardTitle>Registration Status</CardTitle>
-              <CardDescription>Complete your registration to access all features</CardDescription>
+              <CardDescription>Your current registration status and options</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="rounded-lg border border-border p-4">
-                  <div className="mb-3 flex items-center gap-2">
-                    <Briefcase className="h-5 w-5 text-primary" />
-                    <h3 className="font-semibold">Employer Account</h3>
-                  </div>
-                  <p className="mb-4 text-sm text-muted-foreground">
-                    Register as an employer to post jobs and find talent
-                  </p>
-                  <Button asChild variant="outline" className="w-full">
-                    <a href="/employer-registration">Register as Employer</a>
-                  </Button>
+            <CardContent className="space-y-6">
+              {isLoading ? (
+                <div className="flex items-center justify-center py-8">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
                 </div>
+              ) : (
+                <>
+                  <div className="space-y-4">
+                    <div className="rounded-lg border border-border p-4">
+                      <div className="mb-3 flex items-center gap-2">
+                        <Briefcase className="h-5 w-5 text-primary" />
+                        <h3 className="font-semibold">Employer Account</h3>
+                      </div>
+                      {userEmployer ? (
+                        <div className="space-y-3">
+                          <p className="text-sm text-muted-foreground">
+                            Company: {userEmployer.companyName}
+                          </p>
+                          <ApprovalStatusBadge status={userEmployer.approvalStatus} />
+                        </div>
+                      ) : (
+                        <>
+                          <p className="mb-4 text-sm text-muted-foreground">
+                            Register as an employer to post jobs and find talent
+                          </p>
+                          <Button asChild variant="outline" className="w-full">
+                            <a href="/employer-registration">Register as Employer</a>
+                          </Button>
+                        </>
+                      )}
+                    </div>
 
-                <div className="rounded-lg border border-border p-4">
-                  <div className="mb-3 flex items-center gap-2">
-                    <User className="h-5 w-5 text-accent" />
-                    <h3 className="font-semibold">Employee Account</h3>
+                    <div className="rounded-lg border border-border p-4">
+                      <div className="mb-3 flex items-center gap-2">
+                        <User className="h-5 w-5 text-accent" />
+                        <h3 className="font-semibold">Employee Account</h3>
+                      </div>
+                      {userEmployee ? (
+                        <div className="space-y-3">
+                          <p className="text-sm text-muted-foreground">Name: {userEmployee.name}</p>
+                          <ApprovalStatusBadge status={userEmployee.approvalStatus} />
+                        </div>
+                      ) : (
+                        <>
+                          <p className="mb-4 text-sm text-muted-foreground">
+                            Register as an employee to apply for jobs
+                          </p>
+                          <Button asChild variant="outline" className="w-full">
+                            <a href="/employee-registration">Register as Employee</a>
+                          </Button>
+                        </>
+                      )}
+                    </div>
+
+                    <div className="rounded-lg border border-border p-4">
+                      <div className="mb-3 flex items-center gap-2">
+                        <Building2 className="h-5 w-5 text-secondary" />
+                        <h3 className="font-semibold">Business Listing</h3>
+                      </div>
+                      {userBusiness ? (
+                        <div className="space-y-3">
+                          <p className="text-sm text-muted-foreground">
+                            Business: {userBusiness.name}
+                          </p>
+                          <ApprovalStatusBadge status={userBusiness.approvalStatus} />
+                        </div>
+                      ) : (
+                        <>
+                          <p className="mb-4 text-sm text-muted-foreground">
+                            Add your business to the directory
+                          </p>
+                          <Button asChild variant="outline" className="w-full">
+                            <a href="/add-business">Add Business</a>
+                          </Button>
+                        </>
+                      )}
+                    </div>
                   </div>
-                  <p className="mb-4 text-sm text-muted-foreground">
-                    Register as an employee to apply for jobs
-                  </p>
-                  <Button asChild variant="outline" className="w-full">
-                    <a href="/employee-registration">Register as Employee</a>
-                  </Button>
-                </div>
-              </div>
+                </>
+              )}
             </CardContent>
           </Card>
 
@@ -117,12 +181,6 @@ export default function ProfilePage() {
                   <a href="/business-directory">
                     <Building2 className="mr-2 h-4 w-4" />
                     Business Directory
-                  </a>
-                </Button>
-                <Button asChild variant="outline" className="justify-start">
-                  <a href="/add-business">
-                    <Building2 className="mr-2 h-4 w-4" />
-                    Add Business
                   </a>
                 </Button>
               </div>

@@ -1,7 +1,8 @@
 import { Link, useNavigate } from '@tanstack/react-router';
 import { Button } from '@/components/ui/button';
 import { useInternetIdentity } from '../hooks/useInternetIdentity';
-import { Briefcase, Building2, Menu, User, LogOut } from 'lucide-react';
+import { useIsCallerAdmin } from '../hooks/useQueries';
+import { Briefcase, Building2, Menu, User, LogOut, Shield } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +17,7 @@ export default function Header() {
   const { identity, login, clear, isLoggingIn } = useInternetIdentity();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { data: isAdmin } = useIsCallerAdmin();
 
   const isAuthenticated = !!identity && !identity.getPrincipal().isAnonymous();
 
@@ -51,6 +53,15 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
+            {isAuthenticated && isAdmin && (
+              <Link
+                to="/admin"
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                activeProps={{ className: 'text-foreground' }}
+              >
+                Admin
+              </Link>
+            )}
           </nav>
         </div>
 
@@ -68,6 +79,15 @@ export default function Header() {
                     <User className="mr-2 h-4 w-4" />
                     Profile
                   </DropdownMenuItem>
+                  {isAdmin && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={() => navigate({ to: '/admin' })}>
+                        <Shield className="mr-2 h-4 w-4" />
+                        Admin Dashboard
+                      </DropdownMenuItem>
+                    </>
+                  )}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
@@ -102,6 +122,17 @@ export default function Header() {
                     {link.label}
                   </Link>
                 ))}
+                {isAuthenticated && isAdmin && (
+                  <Link
+                    to="/admin"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center gap-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                    activeProps={{ className: 'text-foreground' }}
+                  >
+                    <Shield className="h-4 w-4" />
+                    Admin
+                  </Link>
+                )}
                 <div className="my-4 border-t border-border" />
                 {isAuthenticated ? (
                   <>

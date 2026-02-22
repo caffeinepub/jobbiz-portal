@@ -1,14 +1,219 @@
 {
   "kind": "build_request",
-  "title": "Confirm Internet Identity authentication for job portal and business directory",
+  "title": "Add admin approval system for employee, employer, and business listings",
   "projectName": "JobBiz Portal",
   "priority": "normal",
-  "requirements": [],
-  "constraints": [],
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Add backend data model for admin approval status with three states: pending, approved, rejected. Include approval timestamp and optional rejection reason fields.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-current"
+        ],
+        "quotes": [
+          "I want to get approval from admin to list Employee Employer and Business"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Approval status enum includes pending, approved, and rejected states",
+        "Each entity (Employee, Employer, Business) includes approval status field",
+        "Approval timestamp is recorded when status changes from pending",
+        "Optional rejection reason can be stored with rejected status"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Modify employee registration backend to set initial approval status as pending and store all registration data including name, contact, experience, skills, and education.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-current"
+        ],
+        "quotes": [
+          "I want to get approval from admin to list Employee Employer and Business"
+        ]
+      },
+      "acceptanceCriteria": [
+        "New employee registrations are created with pending approval status",
+        "All employee registration form fields are persisted to backend",
+        "Registration returns employee record with pending status"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Modify employer registration backend to set initial approval status as pending and store all registration data including company name, industry, size, website, description, and contact details.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-current"
+        ],
+        "quotes": [
+          "I want to get approval from admin to list Employee Employer and Business"
+        ]
+      },
+      "acceptanceCriteria": [
+        "New employer registrations are created with pending approval status",
+        "All employer registration form fields are persisted to backend",
+        "Registration returns employer record with pending status"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Modify business listing backend to set initial approval status as pending and store all business data including name, category, description, contact info, and location.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-current"
+        ],
+        "quotes": [
+          "I want to get approval from admin to list Employee Employer and Business"
+        ]
+      },
+      "acceptanceCriteria": [
+        "New business listings are created with pending approval status",
+        "All business form fields are persisted to backend",
+        "Business creation returns record with pending status"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Create backend admin functions to approve or reject employees, employers, and businesses. Include ability to set rejection reason when rejecting.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-current"
+        ],
+        "quotes": [
+          "I want to get approval from admin to list Employee Employer and Business"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Admin can approve pending employee registrations",
+        "Admin can approve pending employer registrations",
+        "Admin can approve pending business listings",
+        "Admin can reject any pending entity with optional reason",
+        "Approval/rejection updates timestamp and status atomically"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Create admin dashboard page at /admin route that displays all pending employees, employers, and businesses awaiting approval with approve/reject action buttons for each.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-current"
+        ],
+        "quotes": [
+          "I want to get approval from admin to list Employee Employer and Business"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Admin dashboard shows three sections: pending employees, pending employers, pending businesses",
+        "Each pending item displays relevant details for review",
+        "Approve button changes status to approved",
+        "Reject button prompts for optional reason and changes status to rejected",
+        "Dashboard refreshes after approval/rejection actions"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Update JobsPage to only display jobs from approved employers, filtering out pending and rejected employer listings.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-current"
+        ],
+        "quotes": [
+          "I want to get approval from admin to list Employee Employer and Business"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Jobs page fetches and displays only jobs from approved employers",
+        "Pending employer jobs are hidden from public view",
+        "Rejected employer jobs are hidden from public view"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Update BusinessDirectoryPage to only display approved businesses, filtering out pending and rejected business listings.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-current"
+        ],
+        "quotes": [
+          "I want to get approval from admin to list Employee Employer and Business"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Business directory shows only approved businesses",
+        "Pending businesses are hidden from public directory",
+        "Rejected businesses are hidden from public directory"
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Add approval status indicator to ProfilePage showing current status (pending, approved, rejected) for user's employee, employer, or business registrations with informative messaging.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-current"
+        ],
+        "quotes": [
+          "I want to get approval from admin to list Employee Employer and Business"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Profile page displays approval status badge for each registration type",
+        "Pending status shows 'Awaiting Admin Approval' message",
+        "Approved status shows 'Approved' with approval date",
+        "Rejected status shows 'Rejected' with reason if provided",
+        "Visual styling differentiates each status clearly"
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "text": "Add Header navigation link to admin dashboard visible only to admin users.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-current"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Admin link appears in header navigation when user is admin",
+        "Admin link is hidden for non-admin users",
+        "Admin link routes to /admin dashboard"
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "text": "Implement backend admin authorization check to verify only designated admin principals can execute approval/rejection functions.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-current"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend stores list of admin principal IDs",
+        "Approval functions verify caller is in admin list",
+        "Non-admin attempts to approve/reject are rejected with unauthorized error"
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not modify existing Internet Identity authentication implementation",
+    "Maintain single-actor backend architecture in backend/main.mo",
+    "Do not edit immutable frontend paths: useInternetIdentity.ts, useActor.ts, main.tsx, components/ui"
+  ],
   "nonGoals": [
-    "Aadhaar authentication integration",
-    "SMS/OTP login",
-    "Phone-based authentication"
+    "Email notifications for approval status changes",
+    "Bulk approval/rejection operations",
+    "Admin role management system",
+    "Approval workflow with multiple approval stages"
   ],
   "imageRequirements": {
     "required": [],

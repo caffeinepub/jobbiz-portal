@@ -4,70 +4,19 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Building2, Search, Phone, MapPin, Plus } from 'lucide-react';
-
-// Mock data for demonstration
-const mockBusinesses = [
-  {
-    id: '1',
-    name: 'Tech Solutions Inc',
-    category: 'Technology',
-    description: 'Leading provider of IT solutions and consulting services',
-    phone: '+1 (555) 123-4567',
-    location: 'San Francisco, CA',
-    image: null,
-  },
-  {
-    id: '2',
-    name: 'Green Garden Cafe',
-    category: 'Restaurant',
-    description: 'Organic cafe serving fresh, locally-sourced meals',
-    phone: '+1 (555) 234-5678',
-    location: 'Portland, OR',
-    image: null,
-  },
-  {
-    id: '3',
-    name: 'Fitness First Gym',
-    category: 'Health & Fitness',
-    description: 'State-of-the-art fitness center with personal training',
-    phone: '+1 (555) 345-6789',
-    location: 'Austin, TX',
-    image: null,
-  },
-  {
-    id: '4',
-    name: 'Creative Design Studio',
-    category: 'Design',
-    description: 'Full-service design agency specializing in branding',
-    phone: '+1 (555) 456-7890',
-    location: 'New York, NY',
-    image: null,
-  },
-  {
-    id: '5',
-    name: 'Legal Advisors LLC',
-    category: 'Legal',
-    description: 'Experienced attorneys providing comprehensive legal services',
-    phone: '+1 (555) 567-8901',
-    location: 'Chicago, IL',
-    image: null,
-  },
-  {
-    id: '6',
-    name: 'Home Repair Pros',
-    category: 'Home Services',
-    description: 'Professional home repair and maintenance services',
-    phone: '+1 (555) 678-9012',
-    location: 'Seattle, WA',
-    image: null,
-  },
-];
+import { Building2, Search, Phone, MapPin, Plus, Loader2 } from 'lucide-react';
+import { useGetAllBusinesses } from '../hooks/useQueries';
 
 export default function BusinessDirectoryPage() {
   const [searchQuery, setSearchQuery] = useState('');
+  const { data: businesses = [], isLoading } = useGetAllBusinesses();
 
-  const filteredBusinesses = mockBusinesses.filter(
+  // Filter to only approved businesses
+  const approvedBusinesses = businesses.filter(
+    (business) => business.approvalStatus.__kind__ === 'approved'
+  );
+
+  const filteredBusinesses = approvedBusinesses.filter(
     (business) =>
       business.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       business.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -80,7 +29,7 @@ export default function BusinessDirectoryPage() {
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <h1 className="mb-2 text-3xl font-bold tracking-tight">Business Directory</h1>
-            <p className="text-muted-foreground">Discover local businesses and services</p>
+            <p className="text-muted-foreground">Discover approved local businesses and services</p>
           </div>
           <Button asChild>
             <Link to="/add-business">
@@ -104,13 +53,21 @@ export default function BusinessDirectoryPage() {
         </div>
       </div>
 
-      {filteredBusinesses.length === 0 ? (
+      {isLoading ? (
+        <Card>
+          <CardContent className="flex items-center justify-center py-16">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </CardContent>
+        </Card>
+      ) : filteredBusinesses.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-16">
             <Building2 className="mb-4 h-12 w-12 text-muted-foreground" />
             <h3 className="mb-2 text-lg font-semibold">No businesses found</h3>
             <p className="text-center text-muted-foreground">
-              Try adjusting your search or be the first to add a business
+              {approvedBusinesses.length === 0
+                ? 'No approved businesses yet. Be the first to add your business!'
+                : 'Try adjusting your search criteria'}
             </p>
           </CardContent>
         </Card>
@@ -135,7 +92,7 @@ export default function BusinessDirectoryPage() {
               <CardContent className="space-y-2">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Phone className="h-4 w-4 shrink-0" />
-                  <span>{business.phone}</span>
+                  <span>{business.contact}</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <MapPin className="h-4 w-4 shrink-0" />

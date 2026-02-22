@@ -10,7 +10,75 @@ import type { ActorMethod } from '@icp-sdk/core/agent';
 import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
-export interface _SERVICE {}
+export type ApprovalStatus = { 'pending' : null } |
+  { 'approved' : Time } |
+  { 'rejected' : { 'timestamp' : Time, 'reason' : string } };
+export interface Business {
+  'id' : string,
+  'contact' : string,
+  'name' : string,
+  'description' : string,
+  'approvalStatus' : ApprovalStatus,
+  'category' : string,
+  'location' : string,
+}
+export interface Employee {
+  'id' : string,
+  'contact' : string,
+  'name' : string,
+  'education' : string,
+  'experience' : string,
+  'approvalStatus' : ApprovalStatus,
+  'skills' : string,
+}
+export interface Employer {
+  'id' : string,
+  'contact' : string,
+  'size' : string,
+  'description' : string,
+  'website' : string,
+  'approvalStatus' : ApprovalStatus,
+  'companyName' : string,
+  'industry' : string,
+}
+export type Time = bigint;
+export interface UserProfile { 'name' : string, 'email' : string }
+export type UserRole = { 'admin' : null } |
+  { 'user' : null } |
+  { 'guest' : null };
+export interface _SERVICE {
+  '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
+  'approveBusiness' : ActorMethod<[string], undefined>,
+  'approveEmployee' : ActorMethod<[string], undefined>,
+  'approveEmployer' : ActorMethod<[string], undefined>,
+  'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
+  'getAllBusinesses' : ActorMethod<[], Array<Business>>,
+  'getAllEmployees' : ActorMethod<[], Array<Employee>>,
+  'getAllEmployers' : ActorMethod<[], Array<Employer>>,
+  'getBusiness' : ActorMethod<[string], [] | [Business]>,
+  'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
+  'getCallerUserRole' : ActorMethod<[], UserRole>,
+  'getEmployee' : ActorMethod<[string], [] | [Employee]>,
+  'getEmployer' : ActorMethod<[string], [] | [Employer]>,
+  'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
+  'isCallerAdmin' : ActorMethod<[], boolean>,
+  'listBusiness' : ActorMethod<
+    [string, string, string, string, string, string],
+    undefined
+  >,
+  'registerEmployee' : ActorMethod<
+    [string, string, string, string, string, string],
+    undefined
+  >,
+  'registerEmployer' : ActorMethod<
+    [string, string, string, string, string, string, string],
+    undefined
+  >,
+  'rejectBusiness' : ActorMethod<[string, string], undefined>,
+  'rejectEmployee' : ActorMethod<[string, string], undefined>,
+  'rejectEmployer' : ActorMethod<[string, string], undefined>,
+  'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
+}
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];
 export declare const idlFactory: IDL.InterfaceFactory;

@@ -1,16 +1,18 @@
 {
-  "frontend/src/App.tsx": "Main application component with TanStack Router setup, defining all routes for the job portal and business directory, wrapped with ThemeProvider and Toaster.",
+  "frontend/src/App.tsx": "Main application component with TanStack Router setup, defining all routes including the new /admin route for the admin dashboard, wrapped with ThemeProvider and Toaster.",
   "frontend/src/components/Layout.tsx": "Layout wrapper component that renders the Header, main content area with Outlet, and Footer for consistent page structure.",
-  "frontend/src/components/Header.tsx": "Responsive header component with navigation, Internet Identity login/logout, mobile menu, and user dropdown menu.",
+  "frontend/src/components/Header.tsx": "Responsive header component with navigation, Internet Identity login/logout, mobile menu, user dropdown, and conditional admin dashboard link visible only to admin users.",
   "frontend/src/components/Footer.tsx": "Footer component displaying copyright information and attribution link to caffeine.ai with UTM tracking.",
   "frontend/src/pages/HomePage.tsx": "Landing page with hero section, feature cards showcasing platform benefits, and registration CTAs for employers, employees, and businesses.",
   "frontend/src/pages/EmployerRegistrationPage.tsx": "Employer registration form with company information fields, payment information display, and Internet Identity authentication requirement.",
   "frontend/src/pages/EmployeeRegistrationPage.tsx": "Employee registration form with personal and professional information fields, payment information display, and Internet Identity authentication requirement.",
-  "frontend/src/pages/BusinessDirectoryPage.tsx": "Business directory listing page with search functionality, displaying mock business cards with contact information and categories.",
+  "frontend/src/pages/BusinessDirectoryPage.tsx": "Business directory page that fetches and displays only approved businesses with search functionality and loading states.",
   "frontend/src/pages/AddBusinessPage.tsx": "Business listing form allowing authenticated users to add their business with photo upload, contact details, and description.",
-  "frontend/src/pages/JobsPage.tsx": "Job listings page with search functionality, displaying mock job postings with company details, location, salary, and application buttons.",
-  "frontend/src/pages/ProfilePage.tsx": "User profile page showing Internet Identity principal, account status, registration options, and quick action links.",
-  "frontend/src/hooks/useQueries.ts": "Placeholder React Query hooks for future backend integration with user profiles, jobs, and businesses data.",
+  "frontend/src/pages/JobsPage.tsx": "Job listings page that fetches and displays only jobs from approved employers with search functionality and loading states.",
+  "frontend/src/pages/ProfilePage.tsx": "User profile page showing Internet Identity principal, account status, registration status with approval badges for each registration type, and quick action links.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for all backend operations including user profiles, admin checks, and CRUD operations for employees, employers, and businesses with approval/rejection mutations.",
   "frontend/src/index.css": "Global styles with OKLCH color system customized with blue/purple primary colors and teal accents for both light and dark modes.",
-  "frontend/tailwind.config.js": "Tailwind configuration with custom color tokens, Inter and Poppins fonts, and extended design system settings."
+  "frontend/tailwind.config.js": "Tailwind configuration with custom color tokens, Inter and Poppins fonts, and extended design system settings.",
+  "frontend/src/components/ApprovalStatusBadge.tsx": "Reusable badge component that displays approval status (pending/approved/rejected) with appropriate icons, colors, timestamps, and rejection reasons.",
+  "frontend/src/pages/AdminDashboardPage.tsx": "Admin dashboard page with three tabs showing pending employees, employers, and businesses with approve/reject actions, rejection reason dialog, and access control verification."
 }

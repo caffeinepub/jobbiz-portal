@@ -9,6 +9,7 @@ import BusinessDirectoryPage from './pages/BusinessDirectoryPage';
 import AddBusinessPage from './pages/AddBusinessPage';
 import JobsPage from './pages/JobsPage';
 import ProfilePage from './pages/ProfilePage';
+import AdminDashboardPage from './pages/AdminDashboardPage';
 
 const rootRoute = createRootRoute({
   component: Layout,
@@ -56,6 +57,12 @@ const profileRoute = createRoute({
   component: ProfilePage,
 });
 
+const adminRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/admin',
+  component: AdminDashboardPage,
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   employerRegistrationRoute,
@@ -64,6 +71,7 @@ const routeTree = rootRoute.addChildren([
   addBusinessRoute,
   jobsRoute,
   profileRoute,
+  adminRoute,
 ]);
 
 const router = createRouter({ routeTree });

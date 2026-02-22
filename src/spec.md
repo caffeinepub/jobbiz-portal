@@ -1,11 +1,15 @@
 # Specification
 
 ## Summary
-**Goal:** Confirm Internet Identity authentication for the JobBiz Portal job portal and business directory application.
+**Goal:** Add admin approval system for employee, employer, and business listings.
 
 **Planned changes:**
-- Verify Internet Identity authentication integration is working correctly
-- Ensure users can authenticate using Internet Identity for both job portal and business directory features
-- Confirm authentication flow handles login, session management, and logout properly
+- Add approval status (pending, approved, rejected) to employee, employer, and business data models with timestamps and rejection reasons
+- Set all new registrations and listings to pending status by default
+- Create admin dashboard at /admin route to review and approve/reject pending items
+- Filter public job listings and business directory to show only approved entries
+- Display approval status on user profile page with informative messaging
+- Add admin-only navigation link in header
+- Implement backend authorization to restrict approval actions to admin users only
 
-**User-visible outcome:** Users can securely log in to the JobBiz Portal using Internet Identity authentication to access job listings and business directory features.
+**User-visible outcome:** Admin users can review and approve/reject new employee, employer, and business registrations through a dedicated dashboard. Public listings only show approved content. Users can see their approval status on their profile page.

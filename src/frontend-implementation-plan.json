@@ -1,6 +1,111 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Confirm Internet Identity authentication for job portal and business directory",
-  "requirements": []
+  "title": "Add admin approval system for employee, employer, and business listings",
+  "requirements": [
+    {
+      "id": "REQ-6",
+      "summary": "Create admin dashboard page displaying pending employees, employers, and businesses with approve/reject actions",
+      "acceptanceCriteria": [
+        "Admin dashboard shows three sections: pending employees, pending employers, pending businesses",
+        "Each pending item displays relevant details for review",
+        "Approve button changes status to approved",
+        "Reject button prompts for optional reason and changes status to rejected",
+        "Dashboard refreshes after approval/rejection actions"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/AdminDashboardPage.tsx",
+          "operation": "create",
+          "description": "Create admin dashboard page component at /admin route that fetches and displays all pending employees, employers, and businesses in three separate sections. Each section shows entity details with approve and reject action buttons. Reject action opens a dialog to collect optional rejection reason. Use the authorization component to verify admin access and show AccessDeniedScreen for non-admin users. After approval/rejection, invalidate queries to refresh the dashboard. Use backend methods: getAllEmployees, getAllEmployers, getAllBusinesses, approveEmployee, approveEmployer, approveBusiness, rejectEmployee, rejectEmployer, rejectBusiness. Verify the authorization component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Add route configuration for /admin path mapping to AdminDashboardPage component to wire the admin dashboard into the router."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Add React Query hooks for fetching all employees (useGetAllEmployees), all employers (useGetAllEmployers), and all businesses (useGetAllBusinesses). Add mutation hooks for approving/rejecting each entity type: useApproveEmployee, useRejectEmployee, useApproveEmployer, useRejectEmployer, useApproveBusiness, useRejectBusiness. Each mutation should invalidate relevant queries on success."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Filter JobsPage to display only jobs from approved employers",
+      "acceptanceCriteria": [
+        "Jobs page fetches and displays only jobs from approved employers",
+        "Pending employer jobs are hidden from public view",
+        "Rejected employer jobs are hidden from public view"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/JobsPage.tsx",
+          "operation": "modify",
+          "description": "Update JobsPage to fetch employers via getAllEmployers backend method and filter to show only jobs from employers with approvalStatus approved. Remove mock data and implement real backend integration that excludes pending and rejected employers from the jobs display."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Filter BusinessDirectoryPage to display only approved businesses",
+      "acceptanceCriteria": [
+        "Business directory shows only approved businesses",
+        "Pending businesses are hidden from public directory",
+        "Rejected businesses are hidden from public directory"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/BusinessDirectoryPage.tsx",
+          "operation": "modify",
+          "description": "Update BusinessDirectoryPage to fetch businesses via getAllBusinesses backend method and filter to display only businesses with approvalStatus approved. Remove mock data and implement real backend integration that excludes pending and rejected businesses from the directory."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Add approval status indicator to ProfilePage showing registration status with informative messaging",
+      "acceptanceCriteria": [
+        "Profile page displays approval status badge for each registration type",
+        "Pending status shows 'Awaiting Admin Approval' message",
+        "Approved status shows 'Approved' with approval date",
+        "Rejected status shows 'Rejected' with reason if provided",
+        "Visual styling differentiates each status clearly"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/ProfilePage.tsx",
+          "operation": "modify",
+          "description": "Add approval status display section to ProfilePage that fetches the current user's employee, employer, and business registrations via backend methods and displays approval status badges for each. Show pending status with 'Awaiting Admin Approval' message, approved status with 'Approved' label and timestamp, and rejected status with 'Rejected' label and optional reason. Use distinct visual styling (colors, icons) for each status state to differentiate pending, approved, and rejected clearly."
+        },
+        {
+          "path": "frontend/src/components/ApprovalStatusBadge.tsx",
+          "operation": "create",
+          "description": "Create reusable ApprovalStatusBadge component that accepts ApprovalStatus type from backend interface and renders appropriate badge with icon, color, and message based on status (pending/approved/rejected). For approved status, format and display the approval timestamp. For rejected status, display the rejection reason if provided."
+        }
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "summary": "Add Header navigation link to admin dashboard visible only to admin users",
+      "acceptanceCriteria": [
+        "Admin link appears in header navigation when user is admin",
+        "Admin link is hidden for non-admin users",
+        "Admin link routes to /admin dashboard"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Header.tsx",
+          "operation": "modify",
+          "description": "Add Admin navigation link in Header that routes to /admin dashboard. Use isCallerAdmin backend method to conditionally render the link only when the authenticated user has admin role. Hide the link for non-admin users. Add the link to both desktop navigation and mobile sheet menu for consistency. Verify the authorization component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Add useIsCallerAdmin React Query hook that calls the isCallerAdmin backend method to check if the current authenticated user has admin privileges. Enable the query only when actor is available and user is authenticated."
+        }
+      ]
+    }
+  ]
 }

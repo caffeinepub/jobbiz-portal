@@ -89,10 +89,572 @@ export class ExternalBlob {
         return this;
     }
 }
-export interface backendInterface {
+export type ApprovalStatus = {
+    __kind__: "pending";
+    pending: null;
+} | {
+    __kind__: "approved";
+    approved: Time;
+} | {
+    __kind__: "rejected";
+    rejected: {
+        timestamp: Time;
+        reason: string;
+    };
+};
+export type Time = bigint;
+export interface Business {
+    id: string;
+    contact: string;
+    name: string;
+    description: string;
+    approvalStatus: ApprovalStatus;
+    category: string;
+    location: string;
 }
+export interface Employer {
+    id: string;
+    contact: string;
+    size: string;
+    description: string;
+    website: string;
+    approvalStatus: ApprovalStatus;
+    companyName: string;
+    industry: string;
+}
+export interface Employee {
+    id: string;
+    contact: string;
+    name: string;
+    education: string;
+    experience: string;
+    approvalStatus: ApprovalStatus;
+    skills: string;
+}
+export interface UserProfile {
+    name: string;
+    email: string;
+}
+export enum UserRole {
+    admin = "admin",
+    user = "user",
+    guest = "guest"
+}
+export interface backendInterface {
+    _initializeAccessControlWithSecret(userSecret: string): Promise<void>;
+    approveBusiness(id: string): Promise<void>;
+    approveEmployee(id: string): Promise<void>;
+    approveEmployer(id: string): Promise<void>;
+    assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
+    getAllBusinesses(): Promise<Array<Business>>;
+    getAllEmployees(): Promise<Array<Employee>>;
+    getAllEmployers(): Promise<Array<Employer>>;
+    getBusiness(id: string): Promise<Business | null>;
+    getCallerUserProfile(): Promise<UserProfile | null>;
+    getCallerUserRole(): Promise<UserRole>;
+    getEmployee(id: string): Promise<Employee | null>;
+    getEmployer(id: string): Promise<Employer | null>;
+    getUserProfile(user: Principal): Promise<UserProfile | null>;
+    isCallerAdmin(): Promise<boolean>;
+    listBusiness(id: string, name: string, category: string, description: string, contact: string, location: string): Promise<void>;
+    registerEmployee(id: string, name: string, contact: string, experience: string, skills: string, education: string): Promise<void>;
+    registerEmployer(id: string, companyName: string, industry: string, size: string, website: string, description: string, contact: string): Promise<void>;
+    rejectBusiness(id: string, reason: string): Promise<void>;
+    rejectEmployee(id: string, reason: string): Promise<void>;
+    rejectEmployer(id: string, reason: string): Promise<void>;
+    saveCallerUserProfile(profile: UserProfile): Promise<void>;
+}
+import type { ApprovalStatus as _ApprovalStatus, Business as _Business, Employee as _Employee, Employer as _Employer, Time as _Time, UserProfile as _UserProfile, UserRole as _UserRole } from "./declarations/backend.did.d.ts";
 export class Backend implements backendInterface {
     constructor(private actor: ActorSubclass<_SERVICE>, private _uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, private _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, private processError?: (error: unknown) => never){}
+    async _initializeAccessControlWithSecret(arg0: string): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor._initializeAccessControlWithSecret(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor._initializeAccessControlWithSecret(arg0);
+            return result;
+        }
+    }
+    async approveBusiness(arg0: string): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.approveBusiness(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.approveBusiness(arg0);
+            return result;
+        }
+    }
+    async approveEmployee(arg0: string): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.approveEmployee(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.approveEmployee(arg0);
+            return result;
+        }
+    }
+    async approveEmployer(arg0: string): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.approveEmployer(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.approveEmployer(arg0);
+            return result;
+        }
+    }
+    async assignCallerUserRole(arg0: Principal, arg1: UserRole): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.assignCallerUserRole(arg0, to_candid_UserRole_n1(this._uploadFile, this._downloadFile, arg1));
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.assignCallerUserRole(arg0, to_candid_UserRole_n1(this._uploadFile, this._downloadFile, arg1));
+            return result;
+        }
+    }
+    async getAllBusinesses(): Promise<Array<Business>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getAllBusinesses();
+                return from_candid_vec_n3(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getAllBusinesses();
+            return from_candid_vec_n3(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getAllEmployees(): Promise<Array<Employee>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getAllEmployees();
+                return from_candid_vec_n8(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getAllEmployees();
+            return from_candid_vec_n8(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getAllEmployers(): Promise<Array<Employer>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getAllEmployers();
+                return from_candid_vec_n11(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getAllEmployers();
+            return from_candid_vec_n11(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getBusiness(arg0: string): Promise<Business | null> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getBusiness(arg0);
+                return from_candid_opt_n14(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getBusiness(arg0);
+            return from_candid_opt_n14(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getCallerUserProfile(): Promise<UserProfile | null> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getCallerUserProfile();
+                return from_candid_opt_n15(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getCallerUserProfile();
+            return from_candid_opt_n15(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getCallerUserRole(): Promise<UserRole> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getCallerUserRole();
+                return from_candid_UserRole_n16(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getCallerUserRole();
+            return from_candid_UserRole_n16(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getEmployee(arg0: string): Promise<Employee | null> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getEmployee(arg0);
+                return from_candid_opt_n18(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getEmployee(arg0);
+            return from_candid_opt_n18(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getEmployer(arg0: string): Promise<Employer | null> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getEmployer(arg0);
+                return from_candid_opt_n19(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getEmployer(arg0);
+            return from_candid_opt_n19(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getUserProfile(arg0: Principal): Promise<UserProfile | null> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getUserProfile(arg0);
+                return from_candid_opt_n15(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getUserProfile(arg0);
+            return from_candid_opt_n15(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async isCallerAdmin(): Promise<boolean> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.isCallerAdmin();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.isCallerAdmin();
+            return result;
+        }
+    }
+    async listBusiness(arg0: string, arg1: string, arg2: string, arg3: string, arg4: string, arg5: string): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.listBusiness(arg0, arg1, arg2, arg3, arg4, arg5);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.listBusiness(arg0, arg1, arg2, arg3, arg4, arg5);
+            return result;
+        }
+    }
+    async registerEmployee(arg0: string, arg1: string, arg2: string, arg3: string, arg4: string, arg5: string): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.registerEmployee(arg0, arg1, arg2, arg3, arg4, arg5);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.registerEmployee(arg0, arg1, arg2, arg3, arg4, arg5);
+            return result;
+        }
+    }
+    async registerEmployer(arg0: string, arg1: string, arg2: string, arg3: string, arg4: string, arg5: string, arg6: string): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.registerEmployer(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.registerEmployer(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+            return result;
+        }
+    }
+    async rejectBusiness(arg0: string, arg1: string): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.rejectBusiness(arg0, arg1);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.rejectBusiness(arg0, arg1);
+            return result;
+        }
+    }
+    async rejectEmployee(arg0: string, arg1: string): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.rejectEmployee(arg0, arg1);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.rejectEmployee(arg0, arg1);
+            return result;
+        }
+    }
+    async rejectEmployer(arg0: string, arg1: string): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.rejectEmployer(arg0, arg1);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.rejectEmployer(arg0, arg1);
+            return result;
+        }
+    }
+    async saveCallerUserProfile(arg0: UserProfile): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.saveCallerUserProfile(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.saveCallerUserProfile(arg0);
+            return result;
+        }
+    }
+}
+function from_candid_ApprovalStatus_n6(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ApprovalStatus): ApprovalStatus {
+    return from_candid_variant_n7(_uploadFile, _downloadFile, value);
+}
+function from_candid_Business_n4(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Business): Business {
+    return from_candid_record_n5(_uploadFile, _downloadFile, value);
+}
+function from_candid_Employee_n9(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Employee): Employee {
+    return from_candid_record_n10(_uploadFile, _downloadFile, value);
+}
+function from_candid_Employer_n12(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Employer): Employer {
+    return from_candid_record_n13(_uploadFile, _downloadFile, value);
+}
+function from_candid_UserRole_n16(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _UserRole): UserRole {
+    return from_candid_variant_n17(_uploadFile, _downloadFile, value);
+}
+function from_candid_opt_n14(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_Business]): Business | null {
+    return value.length === 0 ? null : from_candid_Business_n4(_uploadFile, _downloadFile, value[0]);
+}
+function from_candid_opt_n15(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_UserProfile]): UserProfile | null {
+    return value.length === 0 ? null : value[0];
+}
+function from_candid_opt_n18(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_Employee]): Employee | null {
+    return value.length === 0 ? null : from_candid_Employee_n9(_uploadFile, _downloadFile, value[0]);
+}
+function from_candid_opt_n19(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_Employer]): Employer | null {
+    return value.length === 0 ? null : from_candid_Employer_n12(_uploadFile, _downloadFile, value[0]);
+}
+function from_candid_record_n10(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    id: string;
+    contact: string;
+    name: string;
+    education: string;
+    experience: string;
+    approvalStatus: _ApprovalStatus;
+    skills: string;
+}): {
+    id: string;
+    contact: string;
+    name: string;
+    education: string;
+    experience: string;
+    approvalStatus: ApprovalStatus;
+    skills: string;
+} {
+    return {
+        id: value.id,
+        contact: value.contact,
+        name: value.name,
+        education: value.education,
+        experience: value.experience,
+        approvalStatus: from_candid_ApprovalStatus_n6(_uploadFile, _downloadFile, value.approvalStatus),
+        skills: value.skills
+    };
+}
+function from_candid_record_n13(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    id: string;
+    contact: string;
+    size: string;
+    description: string;
+    website: string;
+    approvalStatus: _ApprovalStatus;
+    companyName: string;
+    industry: string;
+}): {
+    id: string;
+    contact: string;
+    size: string;
+    description: string;
+    website: string;
+    approvalStatus: ApprovalStatus;
+    companyName: string;
+    industry: string;
+} {
+    return {
+        id: value.id,
+        contact: value.contact,
+        size: value.size,
+        description: value.description,
+        website: value.website,
+        approvalStatus: from_candid_ApprovalStatus_n6(_uploadFile, _downloadFile, value.approvalStatus),
+        companyName: value.companyName,
+        industry: value.industry
+    };
+}
+function from_candid_record_n5(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    id: string;
+    contact: string;
+    name: string;
+    description: string;
+    approvalStatus: _ApprovalStatus;
+    category: string;
+    location: string;
+}): {
+    id: string;
+    contact: string;
+    name: string;
+    description: string;
+    approvalStatus: ApprovalStatus;
+    category: string;
+    location: string;
+} {
+    return {
+        id: value.id,
+        contact: value.contact,
+        name: value.name,
+        description: value.description,
+        approvalStatus: from_candid_ApprovalStatus_n6(_uploadFile, _downloadFile, value.approvalStatus),
+        category: value.category,
+        location: value.location
+    };
+}
+function from_candid_variant_n17(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    admin: null;
+} | {
+    user: null;
+} | {
+    guest: null;
+}): UserRole {
+    return "admin" in value ? UserRole.admin : "user" in value ? UserRole.user : "guest" in value ? UserRole.guest : value;
+}
+function from_candid_variant_n7(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    pending: null;
+} | {
+    approved: _Time;
+} | {
+    rejected: {
+        timestamp: _Time;
+        reason: string;
+    };
+}): {
+    __kind__: "pending";
+    pending: null;
+} | {
+    __kind__: "approved";
+    approved: Time;
+} | {
+    __kind__: "rejected";
+    rejected: {
+        timestamp: Time;
+        reason: string;
+    };
+} {
+    return "pending" in value ? {
+        __kind__: "pending",
+        pending: value.pending
+    } : "approved" in value ? {
+        __kind__: "approved",
+        approved: value.approved
+    } : "rejected" in value ? {
+        __kind__: "rejected",
+        rejected: value.rejected
+    } : value;
+}
+function from_candid_vec_n11(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_Employer>): Array<Employer> {
+    return value.map((x)=>from_candid_Employer_n12(_uploadFile, _downloadFile, x));
+}
+function from_candid_vec_n3(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_Business>): Array<Business> {
+    return value.map((x)=>from_candid_Business_n4(_uploadFile, _downloadFile, x));
+}
+function from_candid_vec_n8(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_Employee>): Array<Employee> {
+    return value.map((x)=>from_candid_Employee_n9(_uploadFile, _downloadFile, x));
+}
+function to_candid_UserRole_n1(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: UserRole): _UserRole {
+    return to_candid_variant_n2(_uploadFile, _downloadFile, value);
+}
+function to_candid_variant_n2(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: UserRole): {
+    admin: null;
+} | {
+    user: null;
+} | {
+    guest: null;
+} {
+    return value == UserRole.admin ? {
+        admin: null
+    } : value == UserRole.user ? {
+        user: null
+    } : value == UserRole.guest ? {
+        guest: null
+    } : value;
 }
 export interface CreateActorOptions {
     agent?: Agent;

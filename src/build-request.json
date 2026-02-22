@@ -1,0 +1,17 @@
+{
+  "kind": "build_request",
+  "title": "Confirm Internet Identity authentication for job portal and business directory",
+  "projectName": "JobBiz Portal",
+  "priority": "normal",
+  "requirements": [],
+  "constraints": [],
+  "nonGoals": [
+    "Aadhaar authentication integration",
+    "SMS/OTP login",
+    "Phone-based authentication"
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

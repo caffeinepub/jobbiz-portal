@@ -1,0 +1,16 @@
+{
+  "frontend/src/App.tsx": "Main application component with TanStack Router setup, defining all routes for the job portal and business directory, wrapped with ThemeProvider and Toaster.",
+  "frontend/src/components/Layout.tsx": "Layout wrapper component that renders the Header, main content area with Outlet, and Footer for consistent page structure.",
+  "frontend/src/components/Header.tsx": "Responsive header component with navigation, Internet Identity login/logout, mobile menu, and user dropdown menu.",
+  "frontend/src/components/Footer.tsx": "Footer component displaying copyright information and attribution link to caffeine.ai with UTM tracking.",
+  "frontend/src/pages/HomePage.tsx": "Landing page with hero section, feature cards showcasing platform benefits, and registration CTAs for employers, employees, and businesses.",
+  "frontend/src/pages/EmployerRegistrationPage.tsx": "Employer registration form with company information fields, payment information display, and Internet Identity authentication requirement.",
+  "frontend/src/pages/EmployeeRegistrationPage.tsx": "Employee registration form with personal and professional information fields, payment information display, and Internet Identity authentication requirement.",
+  "frontend/src/pages/BusinessDirectoryPage.tsx": "Business directory listing page with search functionality, displaying mock business cards with contact information and categories.",
+  "frontend/src/pages/AddBusinessPage.tsx": "Business listing form allowing authenticated users to add their business with photo upload, contact details, and description.",
+  "frontend/src/pages/JobsPage.tsx": "Job listings page with search functionality, displaying mock job postings with company details, location, salary, and application buttons.",
+  "frontend/src/pages/ProfilePage.tsx": "User profile page showing Internet Identity principal, account status, registration options, and quick action links.",
+  "frontend/src/hooks/useQueries.ts": "Placeholder React Query hooks for future backend integration with user profiles, jobs, and businesses data.",
+  "frontend/src/index.css": "Global styles with OKLCH color system customized with blue/purple primary colors and teal accents for both light and dark modes.",
+  "frontend/tailwind.config.js": "Tailwind configuration with custom color tokens, Inter and Poppins fonts, and extended design system settings."
+}

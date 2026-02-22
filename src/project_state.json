@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Combined job portal and business directory application. Employers and employees register with paid subscriptions and receive unique IDs. Business directory allows anyone to list their business with photos and contact details. Uses Internet Identity for authentication and Stripe for payment processing.",
+  "architectural_notes": [
+    "Uses Internet Identity for secure authentication (passkey-based)",
+    "Stripe integration for processing registration fees",
+    "Unique ID generation system for employers and employees",
+    "Photo upload capability for business directory listings",
+    "Dual-purpose platform: job portal + business directory"
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Employer registration with payment and unique ID generation",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Employee registration with payment and unique ID generation",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Business directory with photo uploads and business details",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Internet Identity authentication integration",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Stripe payment gateway integration for registration fees",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Navigation system for the application",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "JobBiz Portal",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}
